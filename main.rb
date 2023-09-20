@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+def prompt(*args)
+  print(*args)
+  gets
+end
+
 class Person
   def initialize(name, token)
     @name = name
@@ -33,12 +38,17 @@ class Game
   end
 
   def WinCheck()
+    @game_array.each do |row|
+    end
+
     3.times do |i|
       if @game_array[i] == @game_array[1] && @game_array[1] == @game_array[2]
         WinConfirmation(game_array[i])
+        return true
       end
-      i += 3
+      i += 3 #Work on proper loop method
     end
+    return false
   end
  
   def WinConfirmation(winners_token)
@@ -48,14 +58,35 @@ class Game
       puts "#{@p2.name} WINNNNSSSSS"
     end
   end
+
+  def GameRound(game)
+    rounds = 0
+    until rounds = 9
+      player1_index = prompt "#{player1.name} Choose your move(index 0-8): "
+      game.InsertPlay(player1_index,player1.token)
+      player2_index = prompt "#{player2.name} Choose your move(index 0-8): "
+      game.InsertPlay(player2_index,player2.token)
+
+
 end
 
-player1 = Person.new('Mitch', '0')
-player2 = Person.new('Kirst', 'X')
+def GamePlay
+  name = prompt "Player#{i} name: "
+  name2 = prompt "Player#{i} name: "
+  player1 = Person.new(name '0')
+  player2 = Person.new(name2, 'X')
+  game = Game.new(player1, player2)
 
-game = Game.new(player1, player2)
+  rounds = 0
+  until rounds = 9
+    player1_index = prompt "#{player1.name} Choose your move(index 0-8): "
+    game.InsertPlay(1,player1.token)
 
-game.InsertPlay(1,player1.token)
+
+
+
+
+
 
 game.PrintGameBoard()
 
