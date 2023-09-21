@@ -2,7 +2,7 @@
 
 def prompt(*args)
   print(*args)
-  gets
+  gets.chomp.to_i
 end
 
 class Person
@@ -17,13 +17,13 @@ class Person
 end
 
 class Game
-  def initialize(person1, person2)
-    @p1 = person1
-    @p2 = person2
+  def initialize()
+    @players = [Person.new('Player1', "X"), Person.new('Player2','O')]
     @game_array = Array.new(9,' ')
+    @current_player_index = 0
   end
 
-  def PrintGameBoard()
+  def print_game_board()
     @game_array.each_slice(3) do |row|
         puts row.join('|') # Print each row as a comma-separated list
     end
@@ -59,35 +59,40 @@ class Game
     end
   end
 
-  def GameRound(game)
+  def GameRound()
     rounds = 0
-    until rounds = 9
+    until rounds = 4
       player1_index = prompt "#{player1.name} Choose your move(index 0-8): "
       game.InsertPlay(player1_index,player1.token)
       player2_index = prompt "#{player2.name} Choose your move(index 0-8): "
       game.InsertPlay(player2_index,player2.token)
+    end
+  end
+
+  def switch_player
+    @current_player_index = (@current_player_index + 1) % 2
+  end
+
+  def play
+    9.times do
+      current_player = @players[@current_player_index]
+      loop do
+        position_index = prompt "#{current_player.name} Choose your move(index 0-8): "
+        break if @game_array[position_index] == ' '
+        puts "Error with input, Try Again between 0-8 Index"
+      end
+      if WinCheck == true
+        puts "Game Completed"
+      end
+  end
 
 
 end
 
-def GamePlay
-  name = prompt "Player#{i} name: "
-  name2 = prompt "Player#{i} name: "
-  player1 = Person.new(name '0')
-  player2 = Person.new(name2, 'X')
-  game = Game.new(player1, player2)
+def GamePlay()
+  game = Game.new()
+  game.GameRound()
+  game.print_game_board
+end
 
-  rounds = 0
-  until rounds = 9
-    player1_index = prompt "#{player1.name} Choose your move(index 0-8): "
-    game.InsertPlay(1,player1.token)
-
-
-
-
-
-
-
-game.PrintGameBoard()
-
-game.WinCheck()
+GamePlay()
