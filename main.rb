@@ -17,8 +17,14 @@ class Person
 end
 
 class Game
+  
+  WINNING_COMBOS = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+    [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+  ].freeze
+
   def initialize()
-    @players = [Person.new(name = 'Player1', 'X'), Person.new(name = 'Player2', 'O')]
+    @players = [Person.new('Player1', 'X'), Person.new('Player2', 'O')]
     @game_array = Array.new(9, ' ')
     @current_player_index = 0
   end
@@ -40,16 +46,9 @@ class Game
   end
 
   def win_check()
-    @game_array.each do |row|
+    WINNING_COMBOS.any? do |combo|
+      [@game_array[combo[0]], @game_array[combo[1]], @game_array[combo[2]]].uniq.length == 1 && @game_array[combo[0]] !=' '
     end
-
-    3.times do |i|
-      if @game_array[i] == @game_array[1] && @game_array[1] == @game_array[2]
-        win_confirmation(game_array[i])
-        true
-      end
-    end
-    false
   end
 
   def win_confrimation(winners_token)
@@ -83,6 +82,7 @@ def game_play()
     game.print_game_board
     if game.win_check == true
       puts 'Game Completed'
+      break
     end
   end
 end
